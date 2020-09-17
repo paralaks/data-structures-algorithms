@@ -3,7 +3,7 @@ package paralaks_gmail_com.data_structures_algorithms;
 import java.util.Iterator;
 
 
-public abstract class BinaryTree<T> {
+public abstract class BinaryTree<T extends Comparable<T>> {
 
   abstract public TreeNode<T> addNode(TreeNode<T> root, T value);
 
@@ -25,7 +25,7 @@ public abstract class BinaryTree<T> {
     BreadthFirst
   }
 
-  public static class TreeNode<T> {
+  public static class TreeNode<T extends Comparable<T>> implements Comparable<TreeNode<T>> {
     T value;
     TreeNode<T> parent;
     TreeNode<T> left, right;
@@ -47,6 +47,11 @@ public abstract class BinaryTree<T> {
 
     TreeNode<T> getRight() {
       return right;
+    }
+
+    @Override
+    public int compareTo(TreeNode<T> o) {
+      return this.value.compareTo(o.value);
     }
   }
 

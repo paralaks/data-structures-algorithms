@@ -17,8 +17,8 @@ public class ListTest {
   }
 
   // Minimal list implementation.
-  static class FakeList<T> implements List<T> {
-    static class FakeListNode<T> extends ListNode<T> {
+  static class FakeList<T extends Comparable<T>> implements List<T> {
+    static class FakeListNode<T extends Comparable<T>> extends ListNode<T> {
       FakeListNode<T> next;
 
       public FakeListNode(T value) {

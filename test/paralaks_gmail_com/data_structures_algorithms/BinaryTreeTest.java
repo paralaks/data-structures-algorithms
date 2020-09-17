@@ -12,7 +12,7 @@ import static org.junit.jupiter.api.Assertions.*;
  */
 class BinaryTreeTest {
   // Minimal BinaryTree implementation.
-  static class FakeTree<T> extends BinaryTree<T> {
+  static class FakeTree<T extends Comparable<T>> extends BinaryTree<T> {
     @Override
     public void clear() {
       root = null;
@@ -149,7 +149,7 @@ class BinaryTreeTest {
         return null;
       }
 
-      if (((Comparable<T>) root.value).compareTo(value) == 0) {
+      if (root.value.compareTo(value) == 0) {
         return root;
       }
 

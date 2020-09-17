@@ -1,6 +1,6 @@
 package paralaks_gmail_com.data_structures_algorithms;
 
-public class HashMap<K, V> implements Map<K, V> {
+public class HashMap<K extends Comparable<K>, V extends Comparable<V>> implements Map<K, V> {
   public final float LOAD_FACTOR = 0.75f;
 
   private LinkedList<Entry<K, V>>[] table;
@@ -69,10 +69,9 @@ public class HashMap<K, V> implements Map<K, V> {
   }
 
   @Override
-  @SuppressWarnings("unchecked")
   public V get(K key) {
     for (Entry<K, V> entry : table[hashIndex(key, tableSize)]) {
-      if (((Comparable<K>) entry.key).compareTo(key) == 0) {
+      if (entry.key.compareTo(key) == 0) {
         return entry.value;
       }
     }
@@ -103,12 +102,11 @@ public class HashMap<K, V> implements Map<K, V> {
   }
 
   @Override
-  @SuppressWarnings("unchecked")
   public boolean containsValue(V value) {
     for (LinkedList<Entry<K, V>> list : table) {
       for (Entry<K, V> entry : list) {
         if ((value == null && entry.value == null) ||
-            (value != null && ((Comparable<V>) entry.value).compareTo(value) == 0)) {
+            (value != null && entry.value.compareTo(value) == 0)) {
           return true;
         }
       }

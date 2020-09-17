@@ -2,8 +2,8 @@ package paralaks_gmail_com.data_structures_algorithms;
 
 import java.util.Iterator;
 
-public interface List<T> extends Collection<T> {
-  abstract class ListNode<T> {
+public interface List<T extends Comparable<T>> extends Collection<T> {
+  abstract class ListNode<T extends Comparable<T>> {
     T value;
 
     public ListNode(T value) {
@@ -13,7 +13,7 @@ public interface List<T> extends Collection<T> {
     abstract ListNode<T> getNext();
   }
 
-  class ListIterator<T> implements Iterator<T> {
+  class ListIterator<T extends Comparable<T>> implements Iterator<T> {
     ListNode<T> current;
 
     ListIterator(ListNode<T> head) {
@@ -62,7 +62,6 @@ public interface List<T> extends Collection<T> {
   }
 
   @Override
-  @SuppressWarnings("unchecked")
   default boolean contains(T value) {
     ListNode<T> head = getHead();
 
@@ -72,7 +71,7 @@ public interface List<T> extends Collection<T> {
 
     ListNode<T> current = head;
     while (current != null) {
-      if (((Comparable<T>) current.value).compareTo(value) == 0) {
+      if (current.value.compareTo(value) == 0) {
         return true;
       }
 

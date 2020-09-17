@@ -4,8 +4,8 @@ package paralaks_gmail_com.data_structures_algorithms;
 import java.util.Arrays;
 import java.util.Iterator;
 
-public class Heap<T> implements Collection<T> {
-  static class HeapIterator<T> implements Iterator<T> {
+public class Heap<T extends Comparable<T>> implements Collection<T> {
+  static class HeapIterator<T extends Comparable<T>> implements Iterator<T> {
     int index;
     int size;
     T[] table;
@@ -113,10 +113,9 @@ public class Heap<T> implements Collection<T> {
     trickleUp(size++);
   }
 
-  @SuppressWarnings("unchecked")
   protected int indexOf(T value) {
     for (int i = 0; i < size; i++) {
-      if (((Comparable<T>) table[i]).compareTo(value) == 0) {
+      if (table[i].compareTo(value) == 0) {
         return i;
       }
     }
@@ -143,20 +142,18 @@ public class Heap<T> implements Collection<T> {
     return table[size];
   }
 
-  @SuppressWarnings("unchecked")
   protected void trickleUp(int child) {
     if (child == 0) {
       return;
     }
 
     int parent = (child - 1) / 2;
-    if (((Comparable<T>) table[child]).compareTo(table[parent]) == compareToValue) {
+    if (table[child].compareTo(table[parent]) == compareToValue) {
       swap(parent, child);
       trickleUp(parent);
     }
   }
 
-  @SuppressWarnings("unchecked")
   protected void trickleDown(int parent) {
     if (parent >= size) {
       return;
@@ -164,19 +161,20 @@ public class Heap<T> implements Collection<T> {
 
     int left = 2 * parent + 1;
     int right = left + 1;
+    T parentItem = table[parent];
+    T leftItem = table[left];
+    T rightItem = table[right];
+
 
     // Both left and right children exist
     if (left < size && right < size) {
-      Comparable<T> leftComp = ((Comparable<T>) table[left]);
-      Comparable<T> rightComp = ((Comparable<T>) table[right]);
-
       // Left child is the smallest/biggest of all 3
-      if (leftComp.compareTo(table[parent]) == compareToValue && leftComp.compareTo(table[right]) == compareToValue) {
+      if (leftItem.compareTo(parentItem) == compareToValue && leftItem.compareTo(rightItem) == compareToValue) {
         swap(left, parent);
         trickleDown(left);
       }
       // right child is the smallest/biggest of all 3
-      else if (rightComp.compareTo(table[parent]) == compareToValue && rightComp.compareTo(table[left]) == compareToValue) {
+      else if (rightItem.compareTo(parentItem) == compareToValue && rightItem.compareTo(leftItem) == compareToValue) {
         swap(right, parent);
         trickleDown(right);
       }
@@ -184,7 +182,7 @@ public class Heap<T> implements Collection<T> {
     }
     // Only left child exist
     else if (left < size) {
-      if (((Comparable<T>) table[left]).compareTo(table[parent]) == compareToValue) {
+      if (leftItem.compareTo(parentItem) == compareToValue) {
         swap(left, parent);
         trickleDown(left);
       }

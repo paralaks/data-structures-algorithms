@@ -1,6 +1,6 @@
 package paralaks_gmail_com.data_structures_algorithms;
 
-public class AVLTree<T> extends BinarySearchTree<T> {
+public class AVLTree<T extends Comparable<T>> extends BinarySearchTree<T> {
 
   public AVLTree() {
     clear();

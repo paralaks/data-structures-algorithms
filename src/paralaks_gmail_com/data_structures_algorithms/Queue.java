@@ -2,7 +2,7 @@ package paralaks_gmail_com.data_structures_algorithms;
 
 import java.util.Iterator;
 
-public class Queue<T> implements Collection<T> {
+public class Queue<T extends Comparable<T>> implements Collection<T> {
   private final LinkedList<T> list = new LinkedList<>();
 
   public void enqueue(T val) {

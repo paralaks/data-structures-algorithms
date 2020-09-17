@@ -1,7 +1,7 @@
 package paralaks_gmail_com.data_structures_algorithms;
 
-public class LinkedList<T> implements List<T> {
-  public static class Node<T> extends ListNode<T> {
+public class LinkedList<T extends Comparable<T>> implements List<T> {
+  public static class Node<T extends Comparable<T>> extends ListNode<T> {
     Node<T> next;
 
     Node(T value) {
@@ -146,7 +146,6 @@ public class LinkedList<T> implements List<T> {
   }
 
   @Override
-  @SuppressWarnings("unchecked")
   public T remove(T value) {
     if (value == null) {
       return null;
@@ -155,7 +154,7 @@ public class LinkedList<T> implements List<T> {
     Node<T> prev = null, current = head;
 
     while (current != null) {
-      if (((Comparable<T>) current.value).compareTo(value) == 0) {
+      if (current.value.compareTo(value) == 0) {
         if (current == head) {
           return removeFirst();
         }

@@ -1,6 +1,6 @@
 package paralaks_gmail_com.data_structures_algorithms;
 
-public class BinarySearchTree<T> extends BinaryTree<T> {
+public class BinarySearchTree<T extends Comparable<T>> extends BinaryTree<T> {
 
   public BinarySearchTree() {
     clear();
@@ -29,13 +29,12 @@ public class BinarySearchTree<T> extends BinaryTree<T> {
   }
 
   @Override
-  @SuppressWarnings("unchecked")
   public TreeNode<T> findNode(TreeNode<T> parent, T value) {
     if (parent == null || value == null) {
       return null;
     }
 
-    int compareTo = ((Comparable<T>) parent.value).compareTo(value);
+    int compareTo = parent.value.compareTo(value);
     return compareTo == 0
            ? parent
            : compareTo > 0
@@ -44,13 +43,12 @@ public class BinarySearchTree<T> extends BinaryTree<T> {
   }
 
   @Override
-  @SuppressWarnings("unchecked")
   public TreeNode<T> addNode(TreeNode<T> parent, T value) {
     if (parent == null || value == null) {
       return null;
     }
 
-    if (((Comparable<T>) parent.value).compareTo(value) > 0) {
+    if (parent.value.compareTo(value) > 0) {
       if (parent.left == null) {
         size++;
         return (parent.left = new TreeNode<>(value, parent));
