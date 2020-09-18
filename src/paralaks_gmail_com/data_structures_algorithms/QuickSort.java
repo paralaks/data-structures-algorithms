@@ -11,17 +11,28 @@ public class QuickSort extends Sort {
       return;
     }
 
-    T pivot = items[end];
-    int iPartition = start;
+    // Hoare partition scheme.
+    T pivot = items[(start + end) / 2];
+    int i = start;
+    int j = end;
 
-    for (int i = start; i < end; i++) {
-      if (items[i].compareTo(pivot) * direction <= 0) {
-        swap(items, i, iPartition++);
+    while (true) {
+      while (items[i].compareTo(pivot) * direction < 0) {
+        i++;
       }
-    }
-    swap(items, iPartition, end);
 
-    quickSortItems(items, direction, start, iPartition - 1);
-    quickSortItems(items, direction, iPartition + 1, end);
+      while (items[j].compareTo(pivot) * direction > 0) {
+        j--;
+      }
+
+      if (i >= j) {
+        break;
+      }
+
+      swap(items, i++, j--);
+    }
+
+    quickSortItems(items, direction, start, j);
+    quickSortItems(items, direction, j + 1, end);
   }
 }

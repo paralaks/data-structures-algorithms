@@ -10,9 +10,7 @@ abstract class Sort {
       return;
     }
 
-    direction = direction >= 0
-                ? 1
-                : -1;
+    direction = direction >= 0 ? 1 : -1;
 
     sortItems(items, direction);
   }
