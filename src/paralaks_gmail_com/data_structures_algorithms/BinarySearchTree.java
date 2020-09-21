@@ -13,7 +13,7 @@ public class BinarySearchTree<T extends Comparable<T>> extends BinaryTree<T> {
     }
 
     if (root == null) {
-      root = new TreeNode<>(value);
+      root = new BSTNode<>(value);
       size++;
     } else {
       addNode(root, value);
@@ -24,12 +24,12 @@ public class BinarySearchTree<T extends Comparable<T>> extends BinaryTree<T> {
 
   @Override
   public boolean delete(T value) {
-    TreeNode<T> node = deleteNode(value);
+    BSTNode<T> node = deleteNode(value);
     return node != null;
   }
 
   @Override
-  public TreeNode<T> findNode(TreeNode<T> parent, T value) {
+  public BSTNode<T> findNode(BSTNode<T> parent, T value) {
     if (parent == null || value == null) {
       return null;
     }
@@ -43,7 +43,7 @@ public class BinarySearchTree<T extends Comparable<T>> extends BinaryTree<T> {
   }
 
   @Override
-  public TreeNode<T> addNode(TreeNode<T> parent, T value) {
+  public BSTNode<T> addNode(BSTNode<T> parent, T value) {
     if (parent == null || value == null) {
       return null;
     }
@@ -51,7 +51,7 @@ public class BinarySearchTree<T extends Comparable<T>> extends BinaryTree<T> {
     if (parent.value.compareTo(value) > 0) {
       if (parent.left == null) {
         size++;
-        return (parent.left = new TreeNode<>(value, parent));
+        return (parent.left = new BSTNode<>(value, parent));
       } else {
         return addNode(parent.left, value);
       }
@@ -59,19 +59,19 @@ public class BinarySearchTree<T extends Comparable<T>> extends BinaryTree<T> {
 
     if (parent.right == null) {
       size++;
-      return (parent.right = new TreeNode<>(value, parent));
+      return (parent.right = new BSTNode<>(value, parent));
     } else {
       return addNode(parent.right, value);
     }
   }
 
   @Override
-  public TreeNode<T> swapWithBiggestChild(TreeNode<T> parent) {
+  public BSTNode<T> swapWithBiggestChild(BSTNode<T> parent) {
     if (parent == null || parent.left == null || parent.right == null) {
       return null;
     }
 
-    TreeNode<T> child = parent.left;
+    BSTNode<T> child = parent.left;
     while (child.right != null) {
       child = child.right;
     }
@@ -82,36 +82,36 @@ public class BinarySearchTree<T extends Comparable<T>> extends BinaryTree<T> {
   }
 
   @Override
-  public TreeNode<T> deleteNode(T value) {
-    TreeNode<T> node;
+  public BSTNode<T> deleteNode(T value) {
+    BSTNode<T> node;
 
     if (root == null || value == null || (node = findNode(root, value)) == null) {
       return null;
     }
 
-    TreeNode<T> child = null;
+    BSTNode<T> replacement = null;
     if (node.left != null && node.right != null) {
       node = swapWithBiggestChild(node);
-      child = node.left;
+      replacement = node.left;
     } else if (node.left != null) {
-      child = node.left;
+      replacement = node.left;
     } else if (node.right != null) {
-      child = node.right;
+      replacement = node.right;
     }
 
-    TreeNode<T> parent = node.parent;
+    BSTNode<T> parent = node.parent;
     if (parent == null) {
-      root = child;
+      root = replacement;
     } else {
       if (node == parent.left) {
-        parent.left = child;
+        parent.left = replacement;
       } else {
-        parent.right = child;
+        parent.right = replacement;
       }
     }
 
-    if (child != null) {
-      child.parent = parent;
+    if (replacement != null) {
+      replacement.parent = parent;
     }
 
     size--;

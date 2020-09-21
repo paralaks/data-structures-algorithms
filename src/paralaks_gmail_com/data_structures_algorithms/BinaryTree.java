@@ -5,17 +5,17 @@ import java.util.Iterator;
 
 public abstract class BinaryTree<T extends Comparable<T>> {
 
-  abstract public TreeNode<T> addNode(TreeNode<T> root, T value);
+  abstract public BSTNode<T> addNode(BSTNode<T> root, T value);
 
   abstract public boolean add(T value);
 
-  abstract public TreeNode<T> swapWithBiggestChild(TreeNode<T> parent);
+  abstract public BSTNode<T> swapWithBiggestChild(BSTNode<T> parent);
 
-  abstract public TreeNode<T> deleteNode(T value);
+  abstract public BSTNode<T> deleteNode(T value);
 
   abstract public boolean delete(T value);
 
-  abstract public TreeNode<T> findNode(TreeNode<T> root, T value);
+  abstract public BSTNode<T> findNode(BSTNode<T> root, T value);
 
 
   enum Traversal {
@@ -25,38 +25,46 @@ public abstract class BinaryTree<T extends Comparable<T>> {
     BreadthFirst
   }
 
-  public static class TreeNode<T extends Comparable<T>> implements Comparable<TreeNode<T>> {
+  public static class BSTNode<T extends Comparable<T>> implements Comparable<BSTNode<T>> {
     T value;
-    TreeNode<T> parent;
-    TreeNode<T> left, right;
+    BSTNode<T> parent;
+    BSTNode<T> left, right;
+    boolean isRed = true; // Red-black tree node insertions are red by default.
 
-    TreeNode(T value) {
+    BSTNode(T value) {
       this.value = value;
       parent = left = right = null;
     }
 
-    TreeNode(T value, TreeNode<T> parent) {
+    BSTNode(T value, BSTNode<T> parent) {
       this.value = value;
       this.parent = parent;
       left = right = null;
     }
 
-    TreeNode<T> getLeft() {
+    BSTNode(T value, BSTNode<T> parent, boolean isRed) {
+      this.value = value;
+      this.parent = parent;
+      this.isRed = isRed;
+      left = right = null;
+    }
+
+    BSTNode<T> getLeft() {
       return left;
     }
 
-    TreeNode<T> getRight() {
+    BSTNode<T> getRight() {
       return right;
     }
 
     @Override
-    public int compareTo(TreeNode<T> o) {
+    public int compareTo(BSTNode<T> o) {
       return this.value.compareTo(o.value);
     }
   }
 
   // Class attributes.
-  TreeNode<T> root;
+  BSTNode<T> root;
   int size;
 
 
@@ -74,7 +82,7 @@ public abstract class BinaryTree<T extends Comparable<T>> {
     return size == 0;
   }
 
-  public int height(TreeNode<T> node) {
+  public int height(BSTNode<T> node) {
     if (node == null) {
       return -1;
     }
@@ -83,7 +91,7 @@ public abstract class BinaryTree<T extends Comparable<T>> {
   }
 
   public T find(T value) {
-    TreeNode<T> found = findNode(root, value);
+    BSTNode<T> found = findNode(root, value);
     return found == null
            ? null
            : found.value;
@@ -93,13 +101,13 @@ public abstract class BinaryTree<T extends Comparable<T>> {
     return value != null && findNode(root, value) != null;
   }
 
-  public void swapValue(TreeNode<T> a, TreeNode<T> b) {
+  public void swapValue(BSTNode<T> a, BSTNode<T> b) {
     T temp = a.value;
     a.value = b.value;
     b.value = temp;
   }
 
-  protected void updateParentsPostRotate(TreeNode<T> node, TreeNode<T> temp) {
+  protected void updateParentsPostRotate(BSTNode<T> node, BSTNode<T> temp) {
     temp.parent = node.parent;
 
     if (node.parent != null) {
@@ -121,8 +129,8 @@ public abstract class BinaryTree<T extends Comparable<T>> {
     node.parent = temp;
   }
 
-  TreeNode<T> rightRotate(TreeNode<T> node) {
-    TreeNode<T> temp = node.left;
+  BSTNode<T> rightRotate(BSTNode<T> node) {
+    BSTNode<T> temp = node.left;
     node.left = temp.right;
     temp.right = node;
 
@@ -131,8 +139,8 @@ public abstract class BinaryTree<T extends Comparable<T>> {
     return temp;
   }
 
-  TreeNode<T> leftRotate(TreeNode<T> node) {
-    TreeNode<T> temp = node.right;
+  BSTNode<T> leftRotate(BSTNode<T> node) {
+    BSTNode<T> temp = node.right;
     node.right = temp.left;
     temp.left = node;
 
@@ -141,17 +149,17 @@ public abstract class BinaryTree<T extends Comparable<T>> {
     return temp;
   }
 
-  TreeNode<T> leftRightRotate(TreeNode<T> node) {
+  BSTNode<T> leftRightRotate(BSTNode<T> node) {
     node.left = leftRotate(node.left);
     return rightRotate(node);
   }
 
-  TreeNode<T> rightLeftRotate(TreeNode<T> node) {
+  BSTNode<T> rightLeftRotate(BSTNode<T> node) {
     node.right = rightRotate(node.right);
     return leftRotate(node);
   }
 
-  public void traverseInOrder(TreeNode<T> node, final List<T> list) {
+  public void traverseInOrder(BSTNode<T> node, final List<T> list) {
     if (node == null) {
       return;
     }
@@ -161,7 +169,7 @@ public abstract class BinaryTree<T extends Comparable<T>> {
     traverseInOrder(node.right, list);
   }
 
-  public void traversePreOrder(TreeNode<T> node, final List<T> list) {
+  public void traversePreOrder(BSTNode<T> node, final List<T> list) {
     if (node == null) {
       return;
     }
@@ -171,7 +179,7 @@ public abstract class BinaryTree<T extends Comparable<T>> {
     traversePreOrder(node.right, list);
   }
 
-  public void traversePostOrder(TreeNode<T> node, final List<T> list) {
+  public void traversePostOrder(BSTNode<T> node, final List<T> list) {
     if (node == null) {
       return;
     }
@@ -181,13 +189,13 @@ public abstract class BinaryTree<T extends Comparable<T>> {
     list.addLast(node.value);
   }
 
-  public void traverseBreadthFirst(TreeNode<T> node, final List<T> list) {
+  public void traverseBreadthFirst(BSTNode<T> node, final List<T> list) {
     if (node == null) {
       return;
     }
 
-    Queue<TreeNode<T>> queue = new Queue<>();
-    TreeNode<T> visited;
+    Queue<BSTNode<T>> queue = new Queue<>();
+    BSTNode<T> visited;
 
     queue.enqueue(node);
     while (!queue.isEmpty()) {

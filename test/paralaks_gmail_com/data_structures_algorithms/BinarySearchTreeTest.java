@@ -4,6 +4,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static paralaks_gmail_com.data_structures_algorithms.BinaryTree.BSTNode;
 
 class BinarySearchTreeTest extends BinaryTreeTest {
 
@@ -146,12 +147,12 @@ class BinarySearchTreeTest extends BinaryTreeTest {
   @Test
   void addNode() {
     assertNull(tree.addNode(null, 1), "When parent node is null, nothing is added.");
-    assertNull(tree.addNode(new BinaryTree.TreeNode<>(1), null), "Null value can not be added.");
+    assertNull(tree.addNode(new BSTNode<>(1), null), "Null value can not be added.");
 
-    tree.root = new BinaryTree.TreeNode<>(40);
+    tree.root = new BSTNode<>(40);
 
-    BinaryTree.TreeNode<Integer> root = tree.root;
-    BinaryTree.TreeNode<Integer> added;
+    BSTNode<Integer> root = tree.root;
+    BSTNode<Integer> added;
 
     assertNull(tree.root.left);
     added = tree.addNode(tree.root, 20);
@@ -184,7 +185,7 @@ class BinarySearchTreeTest extends BinaryTreeTest {
   @Test
   void swapWithBiggestChild() {
     tree.add(100);
-    BinaryTree.TreeNode<Integer> root = tree.root;
+    BSTNode<Integer> root = tree.root;
 
     tree.swapWithBiggestChild(root);
     assertEquals(100, root.value, "If node has no children, its value must not change.");
@@ -211,20 +212,20 @@ class BinarySearchTreeTest extends BinaryTreeTest {
     assertNull(tree.deleteNode(null));
     assertNull(tree.deleteNode(99));
 
-    tree.root = new BinaryTree.TreeNode<>(100);
-    tree.root.left = new BinaryTree.TreeNode<>(90, tree.root);
-    tree.root.right = new BinaryTree.TreeNode<>(110, tree.root);
+    tree.root = new BSTNode<>(100);
+    tree.root.left = new BSTNode<>(90, tree.root);
+    tree.root.right = new BSTNode<>(110, tree.root);
 
-    tree.root.left.left = new BinaryTree.TreeNode<>(80, tree.root.left);
-    tree.root.right.right = new BinaryTree.TreeNode<>(120, tree.root.right);
+    tree.root.left.left = new BSTNode<>(80, tree.root.left);
+    tree.root.right.right = new BSTNode<>(120, tree.root.right);
 
-    tree.root.left.left.left = new BinaryTree.TreeNode<>(70, tree.root.left.left);
-    tree.root.left.left.right = new BinaryTree.TreeNode<>(85, tree.root.left.left);
-    tree.root.right.right.right = new BinaryTree.TreeNode<>(130, tree.root.right.right);
+    tree.root.left.left.left = new BSTNode<>(70, tree.root.left.left);
+    tree.root.left.left.right = new BSTNode<>(85, tree.root.left.left);
+    tree.root.right.right.right = new BSTNode<>(130, tree.root.right.right);
 
-    BinaryTree.TreeNode<Integer> node;
-    BinaryTree.TreeNode<Integer> parent;
-    BinaryTree.TreeNode<Integer> child;
+    BSTNode<Integer> node;
+    BSTNode<Integer> parent;
+    BSTNode<Integer> child;
 
     node = tree.findNode(tree.root, 70);
     parent = node.parent;
@@ -260,7 +261,7 @@ class BinarySearchTreeTest extends BinaryTreeTest {
     assertEquals(parent, child.parent, "Deleting a right node with only right child sets node's parent to child's parent ");
 
 
-    BinaryTree.TreeNode<Integer> biggestRightChild = tree.findNode(tree.root, 85);
+    BSTNode<Integer> biggestRightChild = tree.findNode(tree.root, 85);
     node = tree.root;
     assertNotNull(node.left);
     assertNotNull(node.right);

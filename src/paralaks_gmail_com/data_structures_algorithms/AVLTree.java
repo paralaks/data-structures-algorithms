@@ -13,7 +13,7 @@ public class AVLTree<T extends Comparable<T>> extends BinarySearchTree<T> {
     }
 
     if (root == null) {
-      root = new TreeNode<>(value, null);
+      root = new BSTNode<>(value, null);
       size++;
     } else {
       rebalance(addNode(root, value));
@@ -24,7 +24,7 @@ public class AVLTree<T extends Comparable<T>> extends BinarySearchTree<T> {
 
   @Override
   public boolean delete(T value) {
-    TreeNode<T> node = deleteNode(value);
+    BSTNode<T> node = deleteNode(value);
     if (node == null) {
       return false;
     }
@@ -35,13 +35,13 @@ public class AVLTree<T extends Comparable<T>> extends BinarySearchTree<T> {
   }
 
 
-  void rebalance(TreeNode<T> node) {
+  void rebalance(BSTNode<T> node) {
     if (node == null) {
       return;
     }
 
-    TreeNode<T> parent;
-    TreeNode<T> rotated;
+    BSTNode<T> parent;
+    BSTNode<T> rotated;
 
     while (node != null) {
       parent = node.parent;

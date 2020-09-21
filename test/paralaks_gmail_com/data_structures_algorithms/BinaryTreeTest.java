@@ -2,7 +2,7 @@ package paralaks_gmail_com.data_structures_algorithms;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import paralaks_gmail_com.data_structures_algorithms.BinaryTree.TreeNode;
+import paralaks_gmail_com.data_structures_algorithms.BinaryTree.BSTNode;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -26,12 +26,12 @@ class BinaryTreeTest {
       }
 
       if (root == null) {
-        root = new TreeNode<>(value);
+        root = new BSTNode<>(value);
         size++;
         return true;
       }
 
-      TreeNode<T> node = addNode(root, value);
+      BSTNode<T> node = addNode(root, value);
       if (node != null) {
         size++;
       }
@@ -40,29 +40,29 @@ class BinaryTreeTest {
     }
 
     @Override
-    public TreeNode<T> addNode(TreeNode<T> root, T value) {
+    public BSTNode<T> addNode(BSTNode<T> root, T value) {
       return addHeapLike(root, value, 0, size);
     }
 
     // Provides heap tree like add (from top to bottom, left to right)
-    TreeNode<T> addHeapLike(TreeNode<T> parent, T value, int idxParent, int count) {
+    BSTNode<T> addHeapLike(BSTNode<T> parent, T value, int idxParent, int count) {
       if (idxParent > count) {
         return null;
       }
 
       int idxLeft = 2 * idxParent + 1;
       if (count == idxLeft) {
-        parent.left = new TreeNode<>(value, parent);
+        parent.left = new BSTNode<>(value, parent);
         return parent.left;
       }
 
       int idxRight = idxLeft + 1;
       if (count == idxRight) {
-        parent.right = new TreeNode<>(value, parent);
+        parent.right = new BSTNode<>(value, parent);
         return parent.right;
       }
 
-      TreeNode<T> node = addHeapLike(parent.left, value, idxLeft, count);
+      BSTNode<T> node = addHeapLike(parent.left, value, idxLeft, count);
       if (node != null) {
         return node;
       }
@@ -72,12 +72,12 @@ class BinaryTreeTest {
     }
 
     @Override
-    public TreeNode<T> swapWithBiggestChild(TreeNode<T> parent) {
+    public BSTNode<T> swapWithBiggestChild(BSTNode<T> parent) {
       throw new RuntimeException("Methods must be implemented.");
     }
 
     // Helper function... finds last node used for swapping when deleting a node.
-    TreeNode<T> findLastNode(TreeNode<T> parent, int idxParent) {
+    BSTNode<T> findLastNode(BSTNode<T> parent, int idxParent) {
       if (root.left == null && root.right == null) {
         return root;
       }
@@ -96,7 +96,7 @@ class BinaryTreeTest {
         return parent.right;
       }
 
-      TreeNode<T> node = findLastNode(parent.left, idxLeft);
+      BSTNode<T> node = findLastNode(parent.left, idxLeft);
       return node != null
              ? node
              : findLastNode(parent.right, idxRight);
@@ -104,15 +104,15 @@ class BinaryTreeTest {
 
 
     @Override
-    public TreeNode<T> deleteNode(T value) {
-      TreeNode<T> node;
+    public BSTNode<T> deleteNode(T value) {
+      BSTNode<T> node;
 
       if (value == null || root == null || (node = findNode(root, value)) == null) {
         return null;
       }
 
       // Remove last node from the tree and swap last node value with the to be deleted value.
-      TreeNode<T> lastNode = findLastNode(root, 0);
+      BSTNode<T> lastNode = findLastNode(root, 0);
 
       if (lastNode.parent != null) {
         if (lastNode.parent.left == lastNode) {
@@ -133,7 +133,7 @@ class BinaryTreeTest {
 
     @Override
     public boolean delete(T value) {
-      TreeNode<T> node = deleteNode(value);
+      BSTNode<T> node = deleteNode(value);
       if (node == null) {
         return false;
       }
@@ -144,7 +144,7 @@ class BinaryTreeTest {
 
     @Override
     @SuppressWarnings("unchecked")
-    public TreeNode<T> findNode(TreeNode<T> root, T value) {
+    public BSTNode<T> findNode(BSTNode<T> root, T value) {
       if (root == null || value == null) {
         return null;
       }
@@ -153,7 +153,7 @@ class BinaryTreeTest {
         return root;
       }
 
-      TreeNode<T> node;
+      BSTNode<T> node;
       if (root.left != null && (node = findNode(root.left, value)) != null) {
         return node;
       }
@@ -279,7 +279,7 @@ class BinaryTreeTest {
   void height() {
     populateIterableTree();
 
-    TreeNode<Integer> root = tree.root;
+    BSTNode<Integer> root = tree.root;
 
     assertEquals(3, tree.height(root));
 
@@ -377,17 +377,17 @@ class BinaryTreeTest {
 
   @Test
   void rightRotate() {
-    TreeNode<Integer> grandParentsParent = new TreeNode<>(12);
-    TreeNode<Integer> grandParent = new TreeNode<>(10, grandParentsParent);
-    grandParent.left = new TreeNode<>(8, grandParent);
-    grandParent.left.right = new TreeNode<>(9, grandParent.left);
-    grandParent.left.left = new TreeNode<>(6, grandParent.left);
+    BSTNode<Integer> grandParentsParent = new BSTNode<>(12);
+    BSTNode<Integer> grandParent = new BSTNode<>(10, grandParentsParent);
+    grandParent.left = new BSTNode<>(8, grandParent);
+    grandParent.left.right = new BSTNode<>(9, grandParent.left);
+    grandParent.left.left = new BSTNode<>(6, grandParent.left);
     assertEquals(grandParentsParent, grandParent.parent);
     assertEquals(grandParent, grandParent.left.parent);
     assertEquals(grandParent.left, grandParent.left.left.parent);
     assertEquals(grandParent.left, grandParent.left.right.parent);
 
-    TreeNode<Integer> newParent = tree.rightRotate(grandParent);
+    BSTNode<Integer> newParent = tree.rightRotate(grandParent);
     assertEquals(8, newParent.value, "Parent must become the new parent.");
     assertEquals(grandParentsParent, newParent.parent, "Grandparent's parent must become new parent's parent.");
     assertEquals(newParent, newParent.left.parent);
@@ -400,17 +400,17 @@ class BinaryTreeTest {
 
   @Test
   void leftRotate() {
-    TreeNode<Integer> grandParentsParent = new TreeNode<>(4);
-    TreeNode<Integer> grandParent = new TreeNode<>(6, grandParentsParent);
-    grandParent.right = new TreeNode<>(9, grandParent);
-    grandParent.right.left = new TreeNode<>(8, grandParent.right);
-    grandParent.right.right = new TreeNode<>(10, grandParent.right);
+    BSTNode<Integer> grandParentsParent = new BSTNode<>(4);
+    BSTNode<Integer> grandParent = new BSTNode<>(6, grandParentsParent);
+    grandParent.right = new BSTNode<>(9, grandParent);
+    grandParent.right.left = new BSTNode<>(8, grandParent.right);
+    grandParent.right.right = new BSTNode<>(10, grandParent.right);
     assertEquals(grandParentsParent, grandParent.parent);
     assertEquals(grandParent, grandParent.right.parent);
     assertEquals(grandParent.right, grandParent.right.right.parent);
     assertEquals(grandParent.right, grandParent.right.left.parent);
 
-    TreeNode<Integer> newParent = tree.leftRotate(grandParent);
+    BSTNode<Integer> newParent = tree.leftRotate(grandParent);
     assertEquals(9, newParent.value, "Parent must become the new parent.");
     assertEquals(grandParentsParent, newParent.parent, "Grandparent's parent must become new parent's parent.");
     assertEquals(newParent, newParent.left.parent);
@@ -423,15 +423,15 @@ class BinaryTreeTest {
 
   @Test
   void leftRightRotate() {
-    TreeNode<Integer> grandParentsParent = new TreeNode<>(6);
-    TreeNode<Integer> grandParent = new TreeNode<>(10, grandParentsParent);
-    grandParent.left = new TreeNode<>(8, grandParent);
-    grandParent.left.right = new TreeNode<>(9, grandParent.left);
+    BSTNode<Integer> grandParentsParent = new BSTNode<>(6);
+    BSTNode<Integer> grandParent = new BSTNode<>(10, grandParentsParent);
+    grandParent.left = new BSTNode<>(8, grandParent);
+    grandParent.left.right = new BSTNode<>(9, grandParent.left);
     assertEquals(grandParentsParent, grandParent.parent);
     assertEquals(grandParent, grandParent.left.parent);
     assertEquals(grandParent.left, grandParent.left.right.parent);
 
-    TreeNode<Integer> newParent = tree.leftRightRotate(grandParent);
+    BSTNode<Integer> newParent = tree.leftRightRotate(grandParent);
     assertEquals(9, newParent.value, "Parent's right child must become new parent.");
     assertEquals(grandParentsParent, newParent.parent, "Grandparent's parent must become new parent's parent.");
     assertEquals(8, newParent.left.value, "Parent must become new parent's left child.");
@@ -442,15 +442,15 @@ class BinaryTreeTest {
 
   @Test
   void rightLeftRotate() {
-    TreeNode<Integer> grandParentsParent = new TreeNode<>(6);
-    TreeNode<Integer> grandParent = new TreeNode<>(8, grandParentsParent);
-    grandParent.right = new TreeNode<>(10, grandParent);
-    grandParent.right.left = new TreeNode<>(9, grandParent.right);
+    BSTNode<Integer> grandParentsParent = new BSTNode<>(6);
+    BSTNode<Integer> grandParent = new BSTNode<>(8, grandParentsParent);
+    grandParent.right = new BSTNode<>(10, grandParent);
+    grandParent.right.left = new BSTNode<>(9, grandParent.right);
     assertEquals(grandParentsParent, grandParent.parent);
     assertEquals(grandParent, grandParent.right.parent);
     assertEquals(grandParent.right, grandParent.right.left.parent);
 
-    TreeNode<Integer> newParent = tree.rightLeftRotate(grandParent);
+    BSTNode<Integer> newParent = tree.rightLeftRotate(grandParent);
     assertEquals(9, newParent.value, "Parent's left child must become the new parent.");
     assertEquals(grandParentsParent, newParent.parent, "Grandparent's parent must become new parent's parent.");
     assertEquals(8, newParent.left.value, "Grandparent must become new parent's left child.");
