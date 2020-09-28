@@ -127,6 +127,10 @@ public abstract class BinaryTree<T extends Comparable<T>> {
     }
 
     node.parent = temp;
+
+    if (root == node) {
+      root = temp;
+    }
   }
 
   BSTNode<T> rightRotate(BSTNode<T> node) {

@@ -89,29 +89,29 @@ public class BinarySearchTree<T extends Comparable<T>> extends BinaryTree<T> {
       return null;
     }
 
-    BSTNode<T> replacement = null;
+    BSTNode<T> child = null;
     if (node.left != null && node.right != null) {
       node = swapWithBiggestChild(node);
-      replacement = node.left;
+      child = node.left;
     } else if (node.left != null) {
-      replacement = node.left;
+      child = node.left;
     } else if (node.right != null) {
-      replacement = node.right;
+      child = node.right;
     }
 
     BSTNode<T> parent = node.parent;
     if (parent == null) {
-      root = replacement;
+      root = child;
     } else {
       if (node == parent.left) {
-        parent.left = replacement;
+        parent.left = child;
       } else {
-        parent.right = replacement;
+        parent.right = child;
       }
     }
 
-    if (replacement != null) {
-      replacement.parent = parent;
+    if (child != null) {
+      child.parent = parent;
     }
 
     size--;

@@ -34,35 +34,24 @@ public class AVLTree<T extends Comparable<T>> extends BinarySearchTree<T> {
     return true;
   }
 
-
   void rebalance(BSTNode<T> node) {
-    if (node == null) {
-      return;
-    }
-
-    BSTNode<T> parent;
-    BSTNode<T> rotated;
-
     while (node != null) {
-      parent = node.parent;
-      rotated = null;
-
       int balanceFactor = height(node.left) - height(node.right);
       if (balanceFactor > 1) {
-        rotated = height(node.left.left) >= height(node.left.right)
-                  ? rightRotate(node)
-                  : leftRightRotate(node);
+        if (height(node.left.left) >= height(node.left.right)) {
+          rightRotate(node);
+        } else {
+          leftRightRotate(node);
+        }
       } else if (balanceFactor < -1) {
-        rotated = height(node.right.right) >= height(node.right.left)
-                  ? leftRotate(node)
-                  : rightLeftRotate(node);
+        if (height(node.right.right) >= height(node.right.left)) {
+          leftRotate(node);
+        } else {
+          rightLeftRotate(node);
+        }
       }
 
-      if (parent == null && rotated != null) {
-        root = rotated;
-      }
-
-      node = parent;
+      node = node.parent;
     }
   }
 }
