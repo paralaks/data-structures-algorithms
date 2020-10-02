@@ -1,6 +1,6 @@
 package paralaks_gmail_com.data_structures_algorithms;
 
-public class LinkedList<T extends Comparable<T>> implements List<T> {
+public class LinkedList<T extends Comparable<T>> implements List<T>, Comparable<LinkedList<T>> {
   public static class Node<T extends Comparable<T>> extends ListNode<T> {
     Node<T> next;
 
@@ -184,5 +184,10 @@ public class LinkedList<T extends Comparable<T>> implements List<T> {
   @Override
   public String toString() {
     return asString();
+  }
+
+  @Override
+  public int compareTo(LinkedList<T> o) {
+    return this == o ? 0 : -1;
   }
 }
