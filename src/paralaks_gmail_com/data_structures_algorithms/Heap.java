@@ -1,6 +1,7 @@
 package paralaks_gmail_com.data_structures_algorithms;
 
 
+import java.lang.reflect.Array;
 import java.util.Arrays;
 import java.util.Iterator;
 
@@ -37,11 +38,14 @@ public class Heap<T extends Comparable<T>> implements Collection<T> {
   private int capacity;
   private int compareToValue;
   private boolean isMinHeap = true;
+  private T initialValueForGenerics;
 
 
-  public Heap(int initialCapacity) {
+  public Heap(int initialCapacity, T value) {
+    initialValueForGenerics = value;
     capacity = Math.max(2, initialCapacity);
     clear();
+    add(initialValueForGenerics);
   }
 
   public void makeMinHeap(boolean makeMinHeap) {
@@ -68,7 +72,7 @@ public class Heap<T extends Comparable<T>> implements Collection<T> {
     compareToValue = isMinHeap
                      ? -1
                      : 1; // min-heap smaller.compareTo(bigger) = -1
-    table = (T[]) new Object[capacity];
+    table = (T[]) Array.newInstance(initialValueForGenerics.getClass(), capacity);
     size = 0;
   }
 
