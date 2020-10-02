@@ -202,25 +202,6 @@ public class Heap<T extends Comparable<T>> implements Collection<T> {
 
   @Override
   public String toString() {
-    final int limit = 25;
-
-    StringBuilder output = new StringBuilder(capacity);
-    int counter = 1;
-    output.append("[");
-
-    for (T value : this) {
-      output.append(value);
-
-      if (counter < size) {
-        output.append(counter == limit
-                      ? "..."
-                      : ",");
-      }
-
-      counter++;
-    }
-    output.append("]");
-
-    return output.toString();
+    return asString();
   }
 }

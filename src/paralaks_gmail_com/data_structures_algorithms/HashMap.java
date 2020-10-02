@@ -141,6 +141,31 @@ public class HashMap<K extends Comparable<K>, V extends Comparable<V>> implement
 
   @Override
   public String toString() {
-    return "HashMap load factor: " + LOAD_FACTOR + "; current load factor: " + currentLoadFactor() + "; size: " + size;
+    final int limit = 25;
+
+    StringBuilder output = new StringBuilder(size * 5);
+    int counter = 1;
+    output.append("[");
+
+
+    for (K key : keys()) {
+      output.append(key).append(":").append(get(key));
+
+      if (counter == limit) {
+        if (counter < size) {
+          output.append("...");
+        }
+        break;
+      }
+
+      if (counter < size) {
+        output.append(",");
+      }
+
+      counter++;
+    }
+    output.append("]");
+
+    return output.toString();
   }
 }
