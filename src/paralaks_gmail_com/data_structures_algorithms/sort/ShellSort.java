@@ -1,4 +1,4 @@
-package paralaks_gmail_com.data_structures_algorithms;
+package paralaks_gmail_com.data_structures_algorithms.sort;
 
 public class ShellSort extends Sort {
   private final int[] TOKUDAS_SEQUENCE = {10987, 4883, 2170, 964, 428, 190, 84, 37, 16, 7, 3, 1};

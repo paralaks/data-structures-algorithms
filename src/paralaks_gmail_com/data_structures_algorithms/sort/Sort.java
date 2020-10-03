@@ -1,12 +1,12 @@
-package paralaks_gmail_com.data_structures_algorithms;
+package paralaks_gmail_com.data_structures_algorithms.sort;
 
-abstract class Sort {
+public abstract class Sort {
   /**
    * @param items     Array of objects to be sorted. Should implement Comparable interface.
    * @param direction Positive: ascending; negative: descending; 0 ascending.
    */
   public <T extends Comparable<T>> void sort(T[] items, int direction) {
-    if (items == null || items.length <= 1) {
+    if (items == null || items.length == 0) {
       return;
     }
 

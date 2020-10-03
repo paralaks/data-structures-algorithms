@@ -1,4 +1,4 @@
-package paralaks_gmail_com.data_structures_algorithms;
+package paralaks_gmail_com.data_structures_algorithms.sort;
 
 public class InsertionSort extends Sort {
   @Override

@@ -1,4 +1,6 @@
-package paralaks_gmail_com.data_structures_algorithms;
+package paralaks_gmail_com.data_structures_algorithms.sort;
+
+import paralaks_gmail_com.data_structures_algorithms.sort.Sort;
 
 public class SelectionSort extends Sort {
   @Override
