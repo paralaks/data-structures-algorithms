@@ -2,6 +2,7 @@ package paralaks_gmail_com.data_structures_algorithms;
 
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
+import paralaks_gmail_com.data_structures_algorithms.sort.*;
 
 import java.util.Arrays;
 import java.util.Comparator;

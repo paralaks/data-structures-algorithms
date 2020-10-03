@@ -12,7 +12,7 @@ public interface Map<K extends Comparable<K>, V extends Comparable<V>> {
 
     @Override
     public int compareTo(Entry<K, V> other) {
-      return key == null ? (other.key == null ? 0 : -1) : ((Comparable<K>) key).compareTo(other.key);
+      return key == null ? (other.key == null ? 0 : -1) : key.compareTo(other.key);
     }
   }
 

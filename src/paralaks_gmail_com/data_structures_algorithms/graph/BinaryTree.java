@@ -22,7 +22,7 @@ public abstract class BinaryTree<T extends Comparable<T>> {
   abstract public BSTNode<T> findNode(BSTNode<T> root, T value);
 
 
-  enum Traversal {
+  public enum Traversal {
     PreOrder,
     InOrder,
     PostOrder,
@@ -33,14 +33,20 @@ public abstract class BinaryTree<T extends Comparable<T>> {
   protected BSTNode<T> root;
   protected int size;
 
+  public void setRoot(BSTNode<T> root) {
+    this.root = root;
+  }
+
+  public BSTNode<T> getRoot() {
+    return root;
+  }
 
   public void clear() {
     root = null;
     size = 0;
   }
 
-
-  int size() {
+  public int size() {
     return size;
   }
 
@@ -99,7 +105,7 @@ public abstract class BinaryTree<T extends Comparable<T>> {
     }
   }
 
-  BSTNode<T> rightRotate(BSTNode<T> node) {
+  public BSTNode<T> rightRotate(BSTNode<T> node) {
     BSTNode<T> temp = node.left;
     node.left = temp.right;
     temp.right = node;
@@ -109,7 +115,7 @@ public abstract class BinaryTree<T extends Comparable<T>> {
     return temp;
   }
 
-  BSTNode<T> leftRotate(BSTNode<T> node) {
+  public BSTNode<T> leftRotate(BSTNode<T> node) {
     BSTNode<T> temp = node.right;
     node.right = temp.left;
     temp.left = node;
@@ -119,12 +125,12 @@ public abstract class BinaryTree<T extends Comparable<T>> {
     return temp;
   }
 
-  BSTNode<T> leftRightRotate(BSTNode<T> node) {
+  public BSTNode<T> leftRightRotate(BSTNode<T> node) {
     node.left = leftRotate(node.left);
     return rightRotate(node);
   }
 
-  BSTNode<T> rightLeftRotate(BSTNode<T> node) {
+  public BSTNode<T> rightLeftRotate(BSTNode<T> node) {
     node.right = rightRotate(node.right);
     return leftRotate(node);
   }

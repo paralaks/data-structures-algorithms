@@ -6,30 +6,58 @@ public class BSTNode<T extends Comparable<T>> implements Comparable<BSTNode<T>> 
   BSTNode<T> left, right;
   boolean isRed = true; // Red-black tree node insertions are red by default.
 
-  BSTNode(T value) {
+  public BSTNode(T value) {
     this.value = value;
     parent = left = right = null;
   }
 
-  BSTNode(T value, BSTNode<T> parent) {
+  public BSTNode(T value, BSTNode<T> parent) {
     this.value = value;
     this.parent = parent;
     left = right = null;
   }
 
-  BSTNode(T value, BSTNode<T> parent, boolean isRed) {
+  public BSTNode(T value, BSTNode<T> parent, boolean isRed) {
     this.value = value;
     this.parent = parent;
     this.isRed = isRed;
     left = right = null;
   }
 
-  BSTNode<T> getLeft() {
+  public BSTNode<T> getParent() {
+    return parent;
+  }
+
+  public void setValue(T value) {
+    this.value = value;
+  }
+
+  public T getValue() {
+    return value;
+  }
+
+  public void setLeft(BSTNode<T> left) {
+    this.left = left;
+  }
+
+  public BSTNode<T> getLeft() {
     return left;
   }
 
-  BSTNode<T> getRight() {
+  public void setRight(BSTNode<T> right) {
+    this.right = right;
+  }
+
+  public BSTNode<T> getRight() {
     return right;
+  }
+
+  public void setRed(boolean red) {
+    isRed = red;
+  }
+
+  public boolean isRed() {
+    return isRed;
   }
 
   @Override
