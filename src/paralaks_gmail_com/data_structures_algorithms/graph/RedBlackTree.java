@@ -1,4 +1,4 @@
-package paralaks_gmail_com.data_structures_algorithms;
+package paralaks_gmail_com.data_structures_algorithms.graph;
 
 public class RedBlackTree<T extends Comparable<T>> extends BinarySearchTree<T> {
   @Override

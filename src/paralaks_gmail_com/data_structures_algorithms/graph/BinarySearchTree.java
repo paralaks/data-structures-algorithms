@@ -1,4 +1,4 @@
-package paralaks_gmail_com.data_structures_algorithms;
+package paralaks_gmail_com.data_structures_algorithms.graph;
 
 public class BinarySearchTree<T extends Comparable<T>> extends BinaryTree<T> {
 
