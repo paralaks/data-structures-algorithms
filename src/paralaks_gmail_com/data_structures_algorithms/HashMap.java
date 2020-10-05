@@ -47,6 +47,9 @@ public class HashMap<K extends Comparable<K>, V extends Comparable<V>> implement
         newTable[hashIndex(entry.key, newTableSize)].add(entry);
       }
     }
+
+    tableSize = newTableSize;
+    table = newTable;
   }
 
   @Override
@@ -106,7 +109,7 @@ public class HashMap<K extends Comparable<K>, V extends Comparable<V>> implement
     for (LinkedList<Entry<K, V>> list : table) {
       for (Entry<K, V> entry : list) {
         if ((value == null && entry.value == null) ||
-            (value != null && entry.value.compareTo(value) == 0)) {
+            (value != null && entry.value != null && entry.value.compareTo(value) == 0)) {
           return true;
         }
       }
