@@ -45,6 +45,7 @@ class SortImplementationsTest {
     sortAlgorithms.add(new ShellSort());
     sortAlgorithms.add(new MergeSort());
     sortAlgorithms.add(new QuickSort());
+    sortAlgorithms.add(new HeapSort());
 
     stableSortAlgorithms.add(new MergeSort());
   }
@@ -64,7 +65,7 @@ class SortImplementationsTest {
       assertEquals(input, inputRef, name + " should not return a new copy of input.");
 
       for (int i = 0; i < input.length; i++) {
-        assertEquals(expected[i], input[i], name + message);
+        assertEquals(expected[i], input[i], name + " " + message);
       }
     }
   }

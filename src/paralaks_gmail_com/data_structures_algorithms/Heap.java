@@ -49,6 +49,25 @@ public class Heap<T extends Comparable<T>> implements Collection<T> {
     add(firstElement);
   }
 
+  @SuppressWarnings("unchecked")
+  public Heap(T[] items, boolean isMinHeap) {
+    if (items == null || items.length == 0) {
+      throw new RuntimeException("Bad input array. Unable to initialize heap.");
+    }
+
+    capacity = Math.max(16, items.length);
+    firstElement = items[0];
+    this.isMinHeap = isMinHeap;
+    table = (T[]) Array.newInstance(firstElement.getClass(), capacity);
+
+    // Copy elements and heapify.
+    size = items.length;
+    System.arraycopy(items, 0, table, 0, size);
+    heapify();
+  }
+
+  public T[] getTable() {
+    return table;
   }
 
   public void makeMinHeap(boolean makeMinHeap) {
