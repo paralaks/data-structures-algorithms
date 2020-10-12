@@ -36,16 +36,19 @@ public class Heap<T extends Comparable<T>> implements Collection<T> {
   private T[] table;
   private int size;
   private int capacity;
-  private int compareToValue;
-  private boolean isMinHeap = true;
-  private T initialValueForGenerics;
+  private boolean isMinHeap;
+  private final T firstElement; // Helper to initialize generics array.
 
-
+  @SuppressWarnings("unchecked")
   public Heap(int initialCapacity, T value) {
-    initialValueForGenerics = value;
-    capacity = Math.max(2, initialCapacity);
-    clear();
-    add(initialValueForGenerics);
+    capacity = Math.max(16, initialCapacity);
+    firstElement = value;
+    isMinHeap = true;
+    table = (T[]) Array.newInstance(firstElement.getClass(), capacity);
+    size = 0;
+    add(firstElement);
+  }
+
   }
 
   public void makeMinHeap(boolean makeMinHeap) {
@@ -53,13 +56,8 @@ public class Heap<T extends Comparable<T>> implements Collection<T> {
       return;
     }
 
-    T[] copied = Arrays.copyOf(table, size);
-    this.isMinHeap = makeMinHeap;
-    this.clear();
-
-    for (T val : copied) {
-      add(val);
-    }
+    isMinHeap = makeMinHeap;
+    heapify();
   }
 
   public boolean isMinHeap() {
@@ -67,23 +65,18 @@ public class Heap<T extends Comparable<T>> implements Collection<T> {
   }
 
   @Override
-  @SuppressWarnings("unchecked")
   public void clear() {
-    compareToValue = isMinHeap
-                     ? -1
-                     : 1; // min-heap smaller.compareTo(bigger) = -1
-    table = (T[]) Array.newInstance(initialValueForGenerics.getClass(), capacity);
     size = 0;
   }
 
-  protected void swap(int indexA, int indexB) {
-    if (indexA == indexB) {
+  protected void swap(int i, int j) {
+    if (i == j) {
       return;
     }
 
-    T temp = table[indexA];
-    table[indexA] = table[indexB];
-    table[indexB] = temp;
+    T temp = table[i];
+    table[i] = table[j];
+    table[j] = temp;
   }
 
   @Override
@@ -128,18 +121,7 @@ public class Heap<T extends Comparable<T>> implements Collection<T> {
 
   @Override
   public T remove() {
-    return removeAt(0);
-  }
-
-  public T remove(T val) {
-    return removeAt(indexOf(val));
-  }
-
-  protected T removeAt(int index) {
-    if (index < 0 || index >= size) {
-      return null;
-    }
-
+    int index = 0;
     swap(index, --size);
     trickleDown(index);
 
@@ -152,10 +134,16 @@ public class Heap<T extends Comparable<T>> implements Collection<T> {
     }
 
     int parent = (child - 1) / 2;
-    if (table[child].compareTo(table[parent]) == compareToValue) {
+    int childParentCompareTo = table[child].compareTo(table[parent]);
+    if (isMinHeap && childParentCompareTo < 0 || !isMinHeap && childParentCompareTo > 0) {
       swap(parent, child);
       trickleUp(parent);
     }
+  }
+
+  protected void swapAndTrickleDown(int parent, int child) {
+    swap(parent, child);
+    trickleDown(child);
   }
 
   protected void trickleDown(int parent) {
@@ -164,34 +152,45 @@ public class Heap<T extends Comparable<T>> implements Collection<T> {
     }
 
     int left = 2 * parent + 1;
+    if (left >= size) { // No children.
+      return;
+    }
+
     int right = left + 1;
-    T parentItem = table[parent];
-    T leftItem = table[left];
-    T rightItem = table[right];
+    int leftParentCompareTo = table[left].compareTo(table[parent]);
 
+    if (right >= size) {
+      if (isMinHeap && leftParentCompareTo < 0 || !isMinHeap && leftParentCompareTo > 0) {
+        // Only left child exists. Compare it with parent.
+        swapAndTrickleDown(parent, left);
+      }
+    } else {
+      // Both left and right children exist. Find smallest/biggest among parent-left-right then trickleDown as necessary.
+      int leftRightCompareTo = table[left].compareTo(table[right]);
+      int rightParentCompareTo = table[right].compareTo(table[parent]);
 
-    // Both left and right children exist
-    if (left < size && right < size) {
-      // Left child is the smallest/biggest of all 3
-      if (leftItem.compareTo(parentItem) == compareToValue && leftItem.compareTo(rightItem) == compareToValue) {
-        swap(left, parent);
-        trickleDown(left);
-      }
-      // right child is the smallest/biggest of all 3
-      else if (rightItem.compareTo(parentItem) == compareToValue && rightItem.compareTo(leftItem) == compareToValue) {
-        swap(right, parent);
-        trickleDown(right);
-      }
-      // parent is the smallest/biggest
-    }
-    // Only left child exist
-    else if (left < size) {
-      if (leftItem.compareTo(parentItem) == compareToValue) {
-        swap(left, parent);
-        trickleDown(left);
+      if (isMinHeap) {
+        if (leftParentCompareTo < 0 && leftRightCompareTo < 0) {
+          swapAndTrickleDown(parent, left);
+        } else if (rightParentCompareTo < 0 && leftRightCompareTo > 0
+            || leftRightCompareTo == 0 && leftParentCompareTo < 0) {
+          swapAndTrickleDown(parent, right);
+        }
+      } else {
+        if (leftParentCompareTo > 0 && leftRightCompareTo > 0) {
+          swapAndTrickleDown(parent, left);
+        } else if (rightParentCompareTo > 0 && leftRightCompareTo < 0
+            || leftRightCompareTo == 0 && leftParentCompareTo > 0) {
+          swapAndTrickleDown(parent, right);
+        }
       }
     }
-    // No children
+  }
+
+  public void heapify() {
+    for (int i = size - 1; i >= 0; i--) {
+      trickleDown(i);
+    }
   }
 
   @Override
