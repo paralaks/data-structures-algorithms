@@ -3,6 +3,7 @@ package paralaks_gmail_com.data_structures_algorithms;
 
 import java.lang.reflect.Array;
 import java.util.Arrays;
+import java.util.Comparator;
 import java.util.Iterator;
 
 public class Heap<T extends Comparable<T>> implements Collection<T> {
@@ -37,33 +38,52 @@ public class Heap<T extends Comparable<T>> implements Collection<T> {
   private int size;
   private int capacity;
   private boolean isMinHeap;
-  private final T firstElement; // Helper to initialize generics array.
+  private Comparator<T> comparator;
 
   @SuppressWarnings("unchecked")
-  public Heap(int initialCapacity, T value) {
-    capacity = Math.max(16, initialCapacity);
-    firstElement = value;
-    isMinHeap = true;
-    table = (T[]) Array.newInstance(firstElement.getClass(), capacity);
-    size = 0;
-    add(firstElement);
-  }
-
-  @SuppressWarnings("unchecked")
-  public Heap(T[] items, boolean isMinHeap) {
-    if (items == null || items.length == 0) {
-      throw new RuntimeException("Bad input array. Unable to initialize heap.");
+  protected void initialize(int initialCapacity, boolean isMin, T[] items, T value, Comparator<T> c) {
+    if ((items == null || items.length == 0) && value == null) {
+      throw new RuntimeException("Bad input. Initial value or array is required to initialize heap.");
     }
 
-    capacity = Math.max(16, items.length);
-    firstElement = items[0];
-    this.isMinHeap = isMinHeap;
-    table = (T[]) Array.newInstance(firstElement.getClass(), capacity);
+    T firstElement;
+    if (items == null) {
+      size = 0;
+      capacity = Math.max(16, initialCapacity);
+      firstElement = value;
+    } else {
+      size = items.length;
+      capacity = Math.max(16, items.length);
+      firstElement = items[0];
+    }
 
-    // Copy elements and heapify.
-    size = items.length;
-    System.arraycopy(items, 0, table, 0, size);
-    heapify();
+    isMinHeap = isMin;
+    table = (T[]) Array.newInstance(firstElement.getClass(), capacity);
+    comparator = c != null ? c : Comparable::compareTo;
+
+    if (items == null) {
+      add(firstElement);
+    } else {
+      // Copy elements and heapify.
+      System.arraycopy(items, 0, table, 0, size);
+      heapify();
+    }
+  }
+
+  public Heap(int initialCapacity, T value) {
+    initialize(initialCapacity, true, null, value, null);
+  }
+
+  public Heap(int initialCapacity, T value, Comparator<T> c) {
+    initialize(initialCapacity, true, null, value, c);
+  }
+
+  public Heap(T[] items, boolean isMinHeap) {
+    initialize(0, isMinHeap, items, null, null);
+  }
+
+  public Heap(T[] items, boolean isMinHeap, Comparator<T> c) {
+    initialize(0, isMinHeap, items, null, c);
   }
 
   public T[] getTable() {
@@ -131,7 +151,7 @@ public class Heap<T extends Comparable<T>> implements Collection<T> {
 
   protected int indexOf(T value) {
     for (int i = 0; i < size; i++) {
-      if (table[i].compareTo(value) == 0) {
+      if (comparator.compare(table[i], value) == 0) {
         return i;
       }
     }
@@ -140,9 +160,12 @@ public class Heap<T extends Comparable<T>> implements Collection<T> {
 
   @Override
   public T remove() {
-    int index = 0;
-    swap(index, --size);
-    trickleDown(index);
+    if (size == 0) {
+      return null;
+    }
+
+    swap(0, --size);
+    trickleDown(0);
 
     return table[size];
   }
@@ -153,7 +176,7 @@ public class Heap<T extends Comparable<T>> implements Collection<T> {
     }
 
     int parent = (child - 1) / 2;
-    int childParentCompareTo = table[child].compareTo(table[parent]);
+    int childParentCompareTo = comparator.compare(table[child], table[parent]);
     if (isMinHeap && childParentCompareTo < 0 || !isMinHeap && childParentCompareTo > 0) {
       swap(parent, child);
       trickleUp(parent);
@@ -176,7 +199,7 @@ public class Heap<T extends Comparable<T>> implements Collection<T> {
     }
 
     int right = left + 1;
-    int leftParentCompareTo = table[left].compareTo(table[parent]);
+    int leftParentCompareTo = comparator.compare(table[left], table[parent]);
 
     if (right >= size) {
       if (isMinHeap && leftParentCompareTo < 0 || !isMinHeap && leftParentCompareTo > 0) {
@@ -185,8 +208,8 @@ public class Heap<T extends Comparable<T>> implements Collection<T> {
       }
     } else {
       // Both left and right children exist. Find smallest/biggest among parent-left-right then trickleDown as necessary.
-      int leftRightCompareTo = table[left].compareTo(table[right]);
-      int rightParentCompareTo = table[right].compareTo(table[parent]);
+      int leftRightCompareTo = comparator.compare(table[left], table[right]);
+      int rightParentCompareTo = comparator.compare(table[right], table[parent]);
 
       if (isMinHeap) {
         if (leftParentCompareTo < 0 && leftRightCompareTo < 0) {
