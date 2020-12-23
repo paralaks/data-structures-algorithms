@@ -60,13 +60,17 @@ class SortImplementationsTest {
     for (Sort algorithm : sortAlgorithms) {
       String name = algorithm.getClass().getSimpleName();
 
+      long start = System.currentTimeMillis();
       algorithm.sort(input, direction);
+      long end = System.currentTimeMillis();
 
       assertEquals(input, inputRef, name + " should not return a new copy of input.");
 
       for (int i = 0; i < input.length; i++) {
         assertEquals(expected[i], input[i], name + " " + message);
       }
+
+      System.out.println("Sorted " + input.length + " elements using " + name + " in " + (end - start) + " ms.");
     }
   }
 
@@ -189,5 +193,16 @@ class SortImplementationsTest {
         assertEquals(expected[i], list[i], name + " must produce stable output.");
       }
     }
+  }
+
+  @Test
+  public void test_input_large_random_number_array() {
+    final int size = 100000;
+    Double[] bigArray = new Double[size];
+    for (int i = 0; i < size; i++) {
+      bigArray[i] = (Math.random() - 0.5) * 10000;
+    }
+
+    testImplementations(1, bigArray, " must sort a random number array of " + size + " elements.");
   }
 }
