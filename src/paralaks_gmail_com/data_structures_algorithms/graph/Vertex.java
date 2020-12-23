@@ -11,7 +11,7 @@ public class Vertex implements Comparable<Vertex> {
 
   @Override
   public int compareTo(Vertex o) {
-    return vertex == o.vertex ? 0 : -1;
+    return Integer.compare(vertex, o.vertex);
   }
 
   @Override
