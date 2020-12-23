@@ -5,10 +5,18 @@ import paralaks_gmail_com.data_structures_algorithms.LinkedList;
 
 public class WeightedGraph {
   private HashMap<Integer, LinkedList<Vertex>> vertices; // key: vertex; value: adjacency list.
+  private boolean directed;
 
   public WeightedGraph() {
+    directed = false;
     clear();
   }
+
+  public WeightedGraph(boolean directed) {
+    this.directed = directed;
+    clear();
+  }
+
 
   public void clear() {
     vertices = new HashMap<>(10);
@@ -16,6 +24,11 @@ public class WeightedGraph {
 
   public void addEdge(int vertex1, int vertex2, int distance) {
     addVertexWithAdjacency(vertex1, vertex2, distance);
+
+    if (directed) {
+      return;
+    }
+
     addVertexWithAdjacency(vertex2, vertex1, distance);
   }
 
