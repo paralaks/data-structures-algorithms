@@ -1,7 +1,7 @@
-package paralaks_gmail_com.data_structures_algorithms;
+package paralaks_gmail_com.data_structures_algorithms.graph;
 
-import org.junit.jupiter.api.*;
-import paralaks_gmail_com.data_structures_algorithms.graph.AVLTree;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
 

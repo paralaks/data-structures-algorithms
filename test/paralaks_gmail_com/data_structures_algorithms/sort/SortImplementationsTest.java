@@ -1,8 +1,7 @@
-package paralaks_gmail_com.data_structures_algorithms;
+package paralaks_gmail_com.data_structures_algorithms.sort;
 
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
-import paralaks_gmail_com.data_structures_algorithms.sort.*;
 
 import java.util.Arrays;
 import java.util.Comparator;
@@ -14,27 +13,6 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 
 
 class SortImplementationsTest {
-  static class Student implements Comparable<Student> {
-    String name;
-    int id;
-
-    Student(String name, int id) {
-      this.name = name;
-      this.id = id;
-    }
-
-    @Override
-    public int compareTo(Student o) {
-      return this.name.compareTo(o.name);
-    }
-
-    @Override
-    public String toString() {
-      return name + " " + id;
-    }
-  }
-
-
   static Set<Sort> sortAlgorithms = new HashSet<>();
   static Set<Sort> stableSortAlgorithms = new HashSet<>();
 

@@ -1,9 +1,7 @@
-package paralaks_gmail_com.data_structures_algorithms;
+package paralaks_gmail_com.data_structures_algorithms.graph;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import paralaks_gmail_com.data_structures_algorithms.graph.BSTNode;
-import paralaks_gmail_com.data_structures_algorithms.graph.BinarySearchTree;
 
 import static org.junit.jupiter.api.Assertions.*;
 
