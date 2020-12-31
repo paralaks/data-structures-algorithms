@@ -10,6 +10,10 @@ public interface List<T extends Comparable<T>> extends Collection<T> {
       this.value = value;
     }
 
+    public T getValue() {
+      return value;
+    }
+
     abstract ListNode<T> getNext();
   }
 
