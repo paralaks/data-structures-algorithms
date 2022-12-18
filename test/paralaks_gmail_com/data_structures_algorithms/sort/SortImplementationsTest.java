@@ -3,18 +3,15 @@ package paralaks_gmail_com.data_structures_algorithms.sort;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
-import java.util.Arrays;
-import java.util.Comparator;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
 
 
 class SortImplementationsTest {
-  static Set<Sort> sortAlgorithms = new HashSet<>();
-  static Set<Sort> stableSortAlgorithms = new HashSet<>();
+  static List<Sort> sortAlgorithms = new LinkedList<>();
+  static List<Sort> stableSortAlgorithms = new LinkedList<>();
 
   @BeforeAll
   static void setUp() {
@@ -22,33 +19,35 @@ class SortImplementationsTest {
     sortAlgorithms.add(new InsertionSort());
     sortAlgorithms.add(new ShellSort());
     sortAlgorithms.add(new MergeSort());
-    sortAlgorithms.add(new QuickSort());
     sortAlgorithms.add(new HeapSort());
+    sortAlgorithms.add(new QuickSort());
 
     stableSortAlgorithms.add(new MergeSort());
   }
 
   <T extends Comparable<T>> void testImplementations(Sort.DIRECTION direction, T[] input, String message) {
-    T[] inputRef = input;
-    Comparator<T> comparator = (o1, o2) -> (direction == Sort.DIRECTION.DESCENDING ? -1 : 1) * o1.compareTo(o2);
+    int d = direction == Sort.DIRECTION.DESCENDING ? -1 : 1;
+    Comparator<T> comparator = (o1, o2) -> d * o1.compareTo(o2);
 
-    T[] expected = input.clone();
+    T[] expected = Arrays.copyOf(input, input.length);
     Arrays.sort(expected, comparator);
 
     for (Sort algorithm : sortAlgorithms) {
       String name = algorithm.getClass().getSimpleName();
+      T[] sorted = Arrays.copyOf(input, input.length);
+      T[] sortedRef = sorted;
 
       long start = System.currentTimeMillis();
-      algorithm.sort(input, direction);
-      long end = System.currentTimeMillis();
+      algorithm.sort(sorted, direction);
+      long difference = System.currentTimeMillis() - start;
 
-      assertEquals(input, inputRef, name + " should not return a new copy of input.");
+      assertEquals(sorted, sortedRef, name + " should not return a new copy of input.");
 
       for (int i = 0; i < input.length; i++) {
-        assertEquals(expected[i], input[i], name + " " + message);
+        assertEquals(expected[i], sorted[i], name + " " + message);
       }
 
-      System.out.println("Sorted " + input.length + " elements using " + name + " in " + (end - start) + " ms.");
+      System.out.println("Sorted " + input.length + " elements using " + name + " in " + (difference > 1000 ? difference / 1000.0 + " s." : difference + " ms."));
     }
   }
 
@@ -175,12 +174,16 @@ class SortImplementationsTest {
 
   @Test
   public void test_input_large_random_number_array() {
-    final int size = 100000;
-    Double[] bigArray = new Double[size];
-    for (int i = 0; i < size; i++) {
-      bigArray[i] = (Math.random() - 0.5) * 10000;
-    }
+    final int size = 25000;
+    final int maxIteration = 10;
 
-    testImplementations(Sort.DIRECTION.ASCENDING, bigArray, " must sort a random number array of " + size + " elements.");
+    for (int iteration = 1; iteration <= maxIteration; iteration++) {
+      System.out.println("Sorting " + size + " elements. Iteration " + iteration + "/" + maxIteration);
+      Double[] bigArray = new Double[size];
+      for (int i = 0; i < size; i++) {
+        bigArray[i] = Math.random() * size;
+      }
+      testImplementations(Sort.DIRECTION.ASCENDING, bigArray, " must sort a random number array of " + size + " elements.");
+    }
   }
 }
