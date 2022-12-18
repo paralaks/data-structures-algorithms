@@ -32,6 +32,7 @@ public class Dijkstra {
       });
     }
 
+    // Min index must be 0 and max index must match number of vertices
     return minMax.getMin() == 0 && minMax.getMax() == (vertexSet.size() - 1);
   }
 
@@ -58,24 +59,24 @@ public class Dijkstra {
     }
     distance[start] = 0;
 
-    Heap<Vertex> heap = new Heap<>(count, new Vertex(start, 0));
+    Heap<Integer> heap = new Heap<>(count, start);
     while (!heap.isEmpty()) {
-      Vertex current = heap.remove();
+      Integer current = heap.remove();
+      visited[current] = 1;
 
-      visited[current.getVertex()] = 1;
+      for (Vertex v : vertices.get(current)) {
+        Integer adjacent = v.getVertex();
 
-      for (Vertex adjacent : vertices.get(current.getVertex())) {
-        int adjVertex = adjacent.getVertex();
-
-        if (visited[adjVertex] != -1) {
+        // Skip vertex if it was visited
+        if (visited[adjacent] == 1) {
           continue;
         }
 
-        if (current.getWeight() + adjacent.getWeight() < distance[adjVertex]) {
-          distance[adjVertex] = current.getWeight() + adjacent.getWeight();
-          destination[adjVertex] = current.getVertex();
-
-          heap.add(new Vertex(adjacent.getVertex(), distance[adjVertex]));
+        int newDistance = distance[current] + v.getWeight();
+        if (newDistance < distance[adjacent]) {
+          distance[adjacent] = newDistance;
+          destination[adjacent] = current;
+          heap.add(adjacent);
         }
       }
     }
