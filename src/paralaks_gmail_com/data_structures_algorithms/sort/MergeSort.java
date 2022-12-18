@@ -5,11 +5,12 @@ import java.lang.reflect.Array;
 public class MergeSort extends Sort {
   @Override
   @SuppressWarnings("unchecked")
-  protected <T extends Comparable<T>> void sortItems(T[] items, int direction) {
+  protected <T extends Comparable<T>> void sortItems(T[] items, DIRECTION direction) {
+    int d = direction == DIRECTION.DESCENDING ? -1 : 1;
     // Unusual way of initializing a generic array.
     T[] tempItems = (T[]) Array.newInstance(items[0].getClass(), items.length);
 
-    mergeSortItems(items, tempItems, direction, 0, items.length - 1);
+    mergeSortItems(items, tempItems, d, 0, items.length - 1);
   }
 
   protected <T extends Comparable<T>> void mergeSortItems(T[] items, T[] tempItems, int direction, int start, int end) {
@@ -30,8 +31,8 @@ public class MergeSort extends Sort {
     // Sort and merge.
     while (iLeft <= mid && iRight <= end) {
       tempItems[iMerged++] = items[iLeft].compareTo(items[iRight]) * direction <= 0
-                             ? items[iLeft++]
-                             : items[iRight++];
+          ? items[iLeft++]
+          : items[iRight++];
     }
 
     // Copy remaining items.

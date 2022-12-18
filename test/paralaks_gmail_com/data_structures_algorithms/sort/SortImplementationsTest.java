@@ -28,9 +28,9 @@ class SortImplementationsTest {
     stableSortAlgorithms.add(new MergeSort());
   }
 
-  <T extends Comparable<T>> void testImplementations(int direction, T[] input, String message) {
+  <T extends Comparable<T>> void testImplementations(Sort.DIRECTION direction, T[] input, String message) {
     T[] inputRef = input;
-    Comparator<T> comparator = (o1, o2) -> direction * o1.compareTo(o2);
+    Comparator<T> comparator = (o1, o2) -> (direction == Sort.DIRECTION.DESCENDING ? -1 : 1) * o1.compareTo(o2);
 
     T[] expected = input.clone();
     Arrays.sort(expected, comparator);
@@ -59,7 +59,7 @@ class SortImplementationsTest {
     for (Sort algorithm : sortAlgorithms) {
       String name = algorithm.getClass().getSimpleName();
 
-      algorithm.sort(nullInput, 1);
+      algorithm.sort(nullInput, Sort.DIRECTION.ASCENDING);
 
       assertNull(nullInput, name + ": when input is null, sort terminates.");
     }
@@ -67,72 +67,72 @@ class SortImplementationsTest {
 
   @Test
   void inputEmpty() {
-    testImplementations(1, new String[0], "when input is empty, sort must terminate.");
+    testImplementations(Sort.DIRECTION.ASCENDING, new String[0], "when input is empty, sort must terminate.");
   }
 
   @Test
   void input_1_Item() {
-    testImplementations(1, new String[]{"hello"}, "when input has one item, sort must terminate.");
+    testImplementations(Sort.DIRECTION.ASCENDING, new String[]{"hello"}, "when input has one item, sort must terminate.");
   }
 
   @Test
   void input_2_ItemsSorted() {
-    testImplementations(1, new String[]{"hello", "world"}, "when input has multiple items, they must be sorted.");
+    testImplementations(Sort.DIRECTION.ASCENDING, new String[]{"hello", "world"}, "when input has multiple items, they must be sorted.");
   }
 
   @Test
   void input_2_ItemsUnsorted() {
-    testImplementations(1, new String[]{"world", "hello"}, "when input has multiple items, they must be sorted.");
+    testImplementations(Sort.DIRECTION.ASCENDING, new String[]{"world", "hello"}, "when input has multiple items, they must be sorted.");
   }
 
   @Test
   void input_3_ItemsSorted() {
-    testImplementations(1, new String[]{"citizens", "hello", "world"}, "when input has multiple items, they must be sorted.");
+    testImplementations(Sort.DIRECTION.ASCENDING, new String[]{"citizens", "hello", "world"}, "when input has multiple items, they must be sorted.");
   }
 
   @Test
   void input_3_ItemsUnsorted() {
-    testImplementations(1, new String[]{"world", "citizens", "hello"}, "when input has multiple items, they must be sorted.");
+    testImplementations(Sort.DIRECTION.ASCENDING, new String[]{"world", "citizens", "hello"}, "when input has multiple items, they must be sorted.");
   }
 
   @Test
   void input_withDuplicatesSorted_SortAscending() {
-    testImplementations(1, new String[]{"aaa", "ccc", "ddd", "ddd", "lll", "mmm", "ppp", "zzz", "zzz"}, "when input has duplicate items, they must be sorted.");
+    testImplementations(Sort.DIRECTION.ASCENDING, new String[]{"aaa", "ccc", "ddd", "ddd", "lll", "mmm", "ppp", "zzz", "zzz"}, "when input has duplicate items, they must be sorted.");
   }
 
   @Test
   void input_withDuplicatesUnsorted_SortAscending() {
-    testImplementations(1, new String[]{"ccc", "zzz", "aaa", "zzz", "lll", "ddd", "mmm", "ppp", "ddd"}, "when input has duplicate items, they must be sorted.");
+    testImplementations(Sort.DIRECTION.ASCENDING, new String[]{"ccc", "zzz", "aaa", "zzz", "lll", "ddd", "mmm", "ppp", "ddd"}, "when input has duplicate items, they must be sorted.");
   }
 
   @Test
   void input_withDuplicatesSorted_SortDescending() {
-    testImplementations(-1, new String[]{"aaa", "ccc", "ddd", "ddd", "lll", "mmm", "ppp", "zzz", "zzz"}, "when input has duplicate items, they must be sorted.");
+    testImplementations(Sort.DIRECTION.DESCENDING, new String[]{"aaa", "ccc", "ddd", "ddd", "lll", "mmm", "ppp", "zzz", "zzz"}, "when input has duplicate items, they must be sorted.");
   }
 
   @Test
   void input_withDuplicatesUnsorted_SortDescending() {
-    testImplementations(-1, new String[]{"ccc", "zzz", "aaa", "zzz", "lll", "ddd", "mmm", "ppp", "ddd"}, "when input has duplicate items, they must be sorted.");
+    testImplementations(Sort.DIRECTION.DESCENDING, new String[]{"ccc", "zzz", "aaa", "zzz", "lll", "ddd", "mmm", "ppp", "ddd"}, "when input has duplicate items, they must be sorted.");
   }
 
   @Test
   void input_numbersUnsorted_SortAscending() {
-    testImplementations(1, new Integer[]{100, -10, 20, -1, 20, -1, 99, 40, -50, -45, 3, 200, 1, 5}, "when sort direction is descending, items must be sorted in descending order.");
+    testImplementations(Sort.DIRECTION.ASCENDING, new Integer[]{100, -10, 20, -1, 20, -1, 99, 40, -50, -45, 3, 200, 1, 5}, "when sort direction is descending, items must be sorted in descending order.");
   }
 
   @Test
   void input_numbersSorted_SortAscending() {
-    testImplementations(1, new Integer[]{200, 100, 99, 40, 20, 20, 5, 3, 1, -1, -10, -45, -1, -50}, "when sort direction is descending, items must be sorted in descending order.");
+    testImplementations(Sort.DIRECTION.ASCENDING, new Integer[]{200, 100, 99, 40, 20, 20, 5, 3, 1, -1, -10, -45, -1, -50}, "when sort direction is descending, items must be sorted in descending order.");
   }
 
   @Test
   void input_numbersUnsorted_SortDescending() {
-    testImplementations(-1, new Integer[]{100, -10, 20, -1, 20, -1, 99, 40, -50, -45, 3, 200, 1, 5}, "when sort direction is descending, items must be sorted in descending order.");
+    testImplementations(Sort.DIRECTION.DESCENDING, new Integer[]{100, -10, 20, -1, 20, -1, 99, 40, -50, -45, 3, 200, 1, 5}, "when sort direction is descending, items must be sorted in descending order.");
   }
 
   @Test
   void input_numbersSorted_SortDescending() {
-    testImplementations(-1, new Integer[]{200, 100, 99, 40, 20, 20, 5, 3, 1, -1, -10, -45, -1, -50}, "when sort direction is descending, items must be sorted in descending order.");
+    testImplementations(Sort.DIRECTION.DESCENDING, new Integer[]{200, 100, 99, 40, 20, 20, 5, 3, 1, -1, -10, -45, -1, -50}, "when sort direction is descending, items must be sorted in descending order.");
   }
 
   @Test
@@ -166,7 +166,7 @@ class SortImplementationsTest {
           expected[6] // Joe 7
       };
 
-      algorithm.sort(list, 1);
+      algorithm.sort(list, Sort.DIRECTION.ASCENDING);
       for (int i = 0; i < list.length; i++) {
         assertEquals(expected[i], list[i], name + " must produce stable output.");
       }
@@ -181,6 +181,6 @@ class SortImplementationsTest {
       bigArray[i] = (Math.random() - 0.5) * 10000;
     }
 
-    testImplementations(1, bigArray, " must sort a random number array of " + size + " elements.");
+    testImplementations(Sort.DIRECTION.ASCENDING, bigArray, " must sort a random number array of " + size + " elements.");
   }
 }

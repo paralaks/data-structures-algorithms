@@ -2,8 +2,9 @@ package paralaks_gmail_com.data_structures_algorithms.sort;
 
 public class QuickSort extends Sort {
   @Override
-  protected <T extends Comparable<T>> void sortItems(T[] items, int direction) {
-    quickSortItems(items, direction, 0, items.length - 1);
+  protected <T extends Comparable<T>> void sortItems(T[] items, DIRECTION direction) {
+    int d = direction == DIRECTION.DESCENDING ? -1 : 1;
+    quickSortItems(items, d, 0, items.length - 1);
   }
 
   protected <T extends Comparable<T>> void quickSortItems(T[] items, int direction, int start, int end) {

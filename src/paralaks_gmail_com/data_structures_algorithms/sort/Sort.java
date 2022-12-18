@@ -1,16 +1,19 @@
 package paralaks_gmail_com.data_structures_algorithms.sort;
 
 public abstract class Sort {
+  public enum DIRECTION {
+    ASCENDING,
+    DESCENDING
+  }
+
   /**
    * @param items     Array of objects to be sorted. Should implement Comparable interface.
    * @param direction Positive: ascending; negative: descending; 0 ascending.
    */
-  public <T extends Comparable<T>> void sort(T[] items, int direction) {
+  public <T extends Comparable<T>> void sort(T[] items, DIRECTION direction) {
     if (items == null || items.length == 0) {
       return;
     }
-
-    direction = direction >= 0 ? 1 : -1;
 
     sortItems(items, direction);
   }
@@ -25,5 +28,5 @@ public abstract class Sort {
     items[j] = temp;
   }
 
-  abstract protected <T extends Comparable<T>> void sortItems(T[] items, int direction);
+  abstract protected <T extends Comparable<T>> void sortItems(T[] items, DIRECTION direction);
 }

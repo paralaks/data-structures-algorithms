@@ -4,8 +4,8 @@ import paralaks_gmail_com.data_structures_algorithms.Heap;
 
 public class HeapSort extends Sort {
   @Override
-  protected <T extends Comparable<T>> void sortItems(T[] items, int direction) {
-    Heap<T> heap = new Heap<>(items, direction < 0);
+  protected <T extends Comparable<T>> void sortItems(T[] items, DIRECTION direction) {
+    Heap<T> heap = new Heap<>(items, direction == DIRECTION.DESCENDING);
 
     for (int i = 0; i < items.length; i++) {
       heap.remove();

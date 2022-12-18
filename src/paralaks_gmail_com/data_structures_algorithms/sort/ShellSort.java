@@ -4,14 +4,15 @@ public class ShellSort extends Sort {
   private final int[] TOKUDAS_SEQUENCE = {10987, 4883, 2170, 964, 428, 190, 84, 37, 16, 7, 3, 1};
 
   @Override
-  protected <T extends Comparable<T>> void sortItems(T[] items, int direction) {
+  protected <T extends Comparable<T>> void sortItems(T[] items, DIRECTION direction) {
+    int d = direction == DIRECTION.DESCENDING ? -1 : 1;
     for (Integer gap : TOKUDAS_SEQUENCE) {
       for (int i = gap; i < items.length; i++) {
         T item = items[i];
         int j = i;
 
         // Move elements after gap position to the beginning of the array, when gap = 1 do insertion sort.
-        while (j >= gap && (item.compareTo(items[j - gap]) * direction < 0)) {
+        while (j >= gap && (item.compareTo(items[j - gap]) * d < 0)) {
           items[j] = items[(j -= gap)];
         }
 
